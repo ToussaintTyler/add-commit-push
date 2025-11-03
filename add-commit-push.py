@@ -1,10 +1,5 @@
 print ("Hello wold")
 import subprocess
-<<<<<<< HEAD
-commit_message="\"Your actual commit message\""
-=======
-commit_message= "\"Your actual commit message\""
->>>>>>> 2a54e0d9b6f9f24e49ab4d2cd7e94d59a86f2134
 import argparse
 
 
