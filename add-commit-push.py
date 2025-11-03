@@ -46,4 +46,4 @@ print ("git commit -m")
 subprocess.run(["git", "commit", "-m", commit_message], check=True)
 
 print ("git push")
-subprocess.run(["git", "push"], check=True
+subprocess.run(["git", "push"], check=True)
