@@ -1,48 +1,53 @@
-print ("Hello wold")
 import subprocess
 import argparse
 
 
+def run_command(command):
+    print(f"\n$ {' '.join(command)}") 
+    result = subprocess.run(command, text=True)  
+    print()  
+    
+    return result.returncode == 0
+
 def main():
+    
     parser = argparse.ArgumentParser(description="Automate git add, commit, and push.")
-    parser.add_argument("-m", "--message", type=str, help="Commit message.")
+    parser.add_argument("-m", "--message", help="Commit message")
+    parser.add_argument("-f", "--force", action="store_true", help="Skip confirmation step")
     args = parser.parse_args()
+
+    
     message = args.message if args.message else "Auto commit via add-commit-push.py"
 
-print ("Starting add-commit-push")
+    
+    commands = [
+        ["git", "add", "."],
+        ["git", "commit", "-m", message],
+        ["git", "push"]
+    ]
 
-commands = [
-    ["git", "add", "."],
-    ["git", "commit", "-m", commit_message],
-    ["git", "push"]
-]
+   
+    print("The following commands will be executed:")
+    for cmd in commands:
+        print("  " + " ".join(cmd))
 
-print("The following commands will be executed:")
-for cmd in commands:
-    print("  " + " ".join(cmd))
+   
+    if not args.force:
+        confirm = input("\nProceed with these commands? (y/n): ").strip().lower()
+        if confirm != "y":
+            print("Operation cancelled by user.")
+            return
+    else:
+        print("\Force mode enabled — skipping confirmation.")
 
-confirm = input("\nProceed with these commands? (y/n): ").strip().lower()
-if confirm != "y":
-    print("Cancelled.")
-    quit()
+   
+    for cmd in commands:
+        success = run_command(cmd)
+        if not success:
+            print("Error running command. Stopping execution.")
+            return
 
-for cmd in commands:
-    print(f"\n$ {' '.join(cmd)}")
-    result = subprocess.run(cmd, text=True)
-    if result.returncode != 0:
-        print(" Error running command.")
-        quit()
+    print("\n✅ All commands executed successfully!")
 
-print("\ All commands executed successfully!")
-
-print ("git status")
-subprocess.run(["git", "status"])
-
-print ("git add -A")
-subprocess.run(["git", "add", "-A"], check=True)
-
-print ("git commit -m")
-subprocess.run(["git", "commit", "-m", commit_message], check=True)
-
-print ("git push")
-subprocess.run(["git", "push"], check=True)
+if __name__ == "__main__":
+    main()
