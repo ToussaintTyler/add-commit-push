@@ -1,7 +1,7 @@
 print ("Hello wold")
 import subprocess
+commit_message= "\"Your actual commit message\""
 import argparse
-
 
 
 def main():
@@ -14,7 +14,7 @@ print ("Starting add-commit-push")
 
 commands = [
     ["git", "add", "."],
-    ["git", "commit", "-m", message],
+    ["git", "commit", "-m", commit_message],
     ["git", "push"]
 ]
 
